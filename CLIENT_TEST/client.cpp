@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 	
 	if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) < 0)
 		err_n_die("connect failed!");
-	strcpy(sendline, "GET / HTTP/1.1\r\n\r\n");
+	strcpy(sendline, "GET /index.html HTTP/1.1\n\n");
 	send_bytes = strlen(sendline);
 	if (write(sockfd, sendline, send_bytes) != send_bytes)
 		err_n_die("write error");
