@@ -70,11 +70,17 @@ class Server
 				exit(EXIT_FATAL);
 			}
 
+
+			// Kannst gerne alles umschreiben
+			// I DONT UNDERSTAND THE POLL THING
+			// i dont know how to use it
 			int	size = -1;
 			int curfd = -1;
 			struct pollfd polf[10000];
 
 			memset(polf, -1, sizeof(pollfd) * 10000);
+
+
 
 			while (true)
 			{
