@@ -19,6 +19,8 @@ class Parser
 		string		_httpver;
 
 
+		string		_contentType;
+
 		//	HTTP HEADERS
 		/* A lot of headers idk*/
 
@@ -28,11 +30,12 @@ class Parser
 	public:
 		Parser() : _method(0), _path(""), _query(""), _httpver(""){}
 
-		void	ParseRequest(string request);
+		void	parseRequest(string request);
 
 		int		getMethod() { return this->_method; }
 		string	getPath() { return this->_path; }
 		string	getHttpver() { return this->_httpver; }
+		string	getContentType() { return this->_contentType; }
 };
 
 #endif

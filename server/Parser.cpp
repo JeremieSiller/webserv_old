@@ -1,7 +1,7 @@
 #include "Parser.hpp"
 
 
-void	Parser::ParseRequest(string request)
+void	Parser::parseRequest(string request)
 {
 	string buffer;
 
@@ -21,4 +21,13 @@ void	Parser::ParseRequest(string request)
 
 	buffer = buffer.substr(buffer.find(' ') + 1);
 	this->_httpver = buffer.substr(0, buffer.find(' '));
+
+
+	if (request.find("Accept") != string::npos)
+	{
+		buffer = request.substr(request.find("Accept"));
+		buffer = buffer.substr(buffer.find(":"));
+		this->_contentType = buffer.substr(0, buffer.find(','));
+	}
+
 }
