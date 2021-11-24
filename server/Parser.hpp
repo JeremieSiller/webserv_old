@@ -36,6 +36,7 @@ class Parser
 		string	getPath() { return this->_path; }
 		string	getHttpver() { return this->_httpver; }
 		string	getContentType() { return this->_contentType; }
+		void	flush();
 };
 
 #endif

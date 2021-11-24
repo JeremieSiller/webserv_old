@@ -45,7 +45,7 @@ void	Server::setResponse()
 			messageBuf << filebuf << endl;
 		}
 		std::cout << this->_parser.getHttpver();
-		this->_response << this->_parser.getHttpver();
+		this->_response << "HTTP/1.1 ";
 		this->_response << " 200 OK " ; // RESPONSE TYPE /https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 
 		this->_response << endl;
@@ -82,7 +82,7 @@ int	Server::acceptLoop()
 		{
 			char request[10000] = {0};
 			int readval = recv(this->_acceptFD, request, 10000, 0);
-			
+			this->_parser.flush();
 			this->_parser.parseRequest(request);
 
 			setResponse();

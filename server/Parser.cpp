@@ -1,5 +1,11 @@
 #include "Parser.hpp"
 
+void	Parser::flush()
+{
+	this->_path = "";
+	this->_contentType = "";
+	this->_method = 0;
+}
 
 void	Parser::parseRequest(string request)
 {
@@ -19,15 +25,18 @@ void	Parser::parseRequest(string request)
 	this->_path = ".";
 	this->_path += buffer.substr(0, buffer.find(' '));
 
+	if (buffer.find('.') != string::npos)
+	{
+		this->_contentType += ": text/";
+		this->_contentType += buffer.substr(buffer.find('.') + 1,buffer.find(' ') - (buffer.find('.') + 1));
+	}
+	else
+		this->_contentType = ": text/plain";
+
 	buffer = buffer.substr(buffer.find(' ') + 1);
 	this->_httpver = buffer.substr(0, buffer.find(' '));
 
 
-	if (request.find("Accept") != string::npos)
-	{
-		buffer = request.substr(request.find("Accept"));
-		buffer = buffer.substr(buffer.find(":"));
-		this->_contentType = buffer.substr(0, buffer.find(','));
-	}
+
 
 }
