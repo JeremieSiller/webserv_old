@@ -37,10 +37,12 @@ const endgame = () =>
 }
 
 let is_alive =true;
-
+let	do_move = true;
 document.addEventListener("keydown", event =>
 {
-	if (event.key == "w" && direction != "SOUTH")
+	if (!do_move)
+	{}
+	else if (event.key == "w" && direction != "SOUTH")
 		direction = "NORTH";
 	else if (event.key == "a" && direction != "WEST")
 		direction = "EAST";
@@ -48,6 +50,7 @@ document.addEventListener("keydown", event =>
 		direction = "SOUTH"
 	else if (event.key == "d" && direction != "EAST")
 		direction = "WEST"
+	do_move = false;
 });
 
 const checkSchwanz = () =>
@@ -123,6 +126,7 @@ const gameloop = () =>
 			}
 			moveSnake();
 			gameloop();
+			do_move = true;
 		}, 100)
 	}
 	else

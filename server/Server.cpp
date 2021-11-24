@@ -81,7 +81,7 @@ int	Server::acceptLoop()
 		else
 		{
 			char request[10000] = {0};
-			int readval = recv(this->_acceptFD, request, 10000, 0);
+			recv(this->_acceptFD, request, 10000, 0);
 			this->_parser.flush();
 			this->_parser.parseRequest(request);
 
