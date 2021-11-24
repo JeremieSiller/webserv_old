@@ -27,18 +27,14 @@ int	Server::listenSocket(int &backlog)
 void	Server::setResponse()
 {
 	this->_response.str("");
-	if (this->_parser.getPath() == "./flavicon.ico")
-	{
-		this->_response << " 200 OK " << endl << endl;
-	}
-	else if (this->_parser.getMethod() == 0) // GET
+	if (this->_parser.getMethod() == 0) // GET
 	{
 		std::stringstream	messageBuf;
 		std::ifstream		fileStream(this->_parser.getPath());
 		
 		if (!fileStream.is_open())
 		{
-			this->_response << this->_parser.getHttpver() << " 404 ERROR " << endl << endl;
+			this->_response << this->_parser.getHttpver() << " 200 OK " << endl << endl;
 			return ;
 		}
 
