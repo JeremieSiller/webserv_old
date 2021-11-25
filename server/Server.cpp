@@ -70,13 +70,14 @@ int	Server::acceptLoop()
 			return (-1);
 		fds[0].fd = this->_acceptFD;
 		fds[0].events = 0;
-		fds[0].events |= POLL_IN;
-		fds[0].events |= POLL_OUT;
+		fds[0].events |= 1;
+		fds[0].events |= 2;
 		fcntl(this->_acceptFD, F_SETFL, O_NONBLOCK);
 		pollret = poll(fds, 1, 5000);
 		if (pollret == 0)
 		{
 			write(1, "timeout",7);
+			close(this->_acceptFD);
 		}
 		else
 		{
@@ -89,9 +90,10 @@ int	Server::acceptLoop()
 
 			// Write Response to socket;
 			write(this->_acceptFD, this->_response.str().c_str(), this->_response.str().length());
-			cout << this->_response.str();
-			cout << "------------------------------" << endl;
-			cout << "------------------------------" << endl;
+			cout << request << endl;
+			//cout << this->_response.str();
+			//cout << "------------------------------" << endl;
+			//cout << "------------------------------" << endl;
 			close(this->_acceptFD);
 		}
 	}

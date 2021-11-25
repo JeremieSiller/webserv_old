@@ -11,6 +11,7 @@
 # include <fcntl.h>
 # include <iostream>
 # include <poll.h>
+# include <string.h>
 
 # include <sstream>
 
