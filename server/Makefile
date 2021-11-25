@@ -1,18 +1,21 @@
-
 NAME = server
 
 CC = clang++
 
 CFLAGS = -Wall -Werror -Wextra
 
-SCR = Parser.cpp main.cpp Server.cpp
+SRC = Parser.cpp main.cpp Server.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(SRC) -o $@
+%.o: %.cpp
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) $(CFLAGS) -o $@
+
 
 clean:
 	rm -f $(OBJ)
