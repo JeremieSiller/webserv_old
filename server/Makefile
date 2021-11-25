@@ -10,7 +10,7 @@ SCR = Parser.cpp main.cpp Server.cpp
 OBJ = $(SRC:.cpp=.o)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(SCR) -o $@
+	$(CC) $(CFLAGS) $(SRC) -o $@
 
 all: $(NAME)
 
