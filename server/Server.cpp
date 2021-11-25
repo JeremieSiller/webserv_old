@@ -34,7 +34,7 @@ void	Server::setResponse()
 		
 		if (!fileStream.is_open())
 		{
-			this->_response << this->_parser.getHttpver() << " 200 OK " << endl << endl;
+			this->_response << this->_parser.getHttpver() << " 200 OK " << endl << endl << endl;
 			return ;
 		}
 
