@@ -18,13 +18,13 @@
 
 # define EXIT_FATAL -1
 
-#ifndef POLL_IN
-# define POLL_IN 1
-#endif
+// #ifndef POLL_IN
+// # define POLL_IN 1
+// #endif
 
-#ifndef POLL_OUT
-# define POLL_OUT 1
-#endif
+// #ifndef POLL_OUT
+// # define POLL_OUT 1
+// #endif
 
 using std::string;
 using std::cout;
