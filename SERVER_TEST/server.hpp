@@ -24,12 +24,20 @@
 
 
 class Server {
-class ServerErr : public std::exception {
-public:
-	virtual const char * what() const throw() {
-		return (std::strerror(errno));
-	}
-};
+private:
+	class ServerErr : public std::exception {
+	private:
+		std::string _msg;
+	public:
+		ServerErr() : _msg(std::strerror(errno)) { };
+		ServerErr(std::string const &msg) : _msg(msg) { 
+			_msg += std::strerror(errno);
+		};
+		virtual ~ServerErr() _NOEXCEPT { }
+		virtual const char * what() const throw() {
+			return (_msg.c_str());
+		}
+	};
 private:
 	struct sockaddr_in	_address;
 	int					_socket;

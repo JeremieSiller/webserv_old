@@ -1,11 +1,11 @@
 
-NAME = client
+NAME = serv
 
 CC = clang++
 
-CFLAGS = -Wall -Werror -Wextra
+# CFLAGS = -Wall -Werror -Wextra
 
-SCR = server.cpp
+SCR = server.cpp main.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

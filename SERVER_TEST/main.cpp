@@ -3,6 +3,7 @@
 
 void	sig_exit(int sig)
 {
+	std::cout << "\rServer exited successfully" << std::endl;
 	exit(0);
 }
 
