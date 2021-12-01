@@ -35,8 +35,4 @@ void	Parser::parseRequest(string request)
 
 	buffer = buffer.substr(buffer.find(' ') + 1);
 	this->_httpver = buffer.substr(0, buffer.find(' '));
-
-
-
-
 }

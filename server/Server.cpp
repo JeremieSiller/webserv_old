@@ -67,12 +67,12 @@ int	Server::acceptLoop()
 	while (true)
 	{
 		if ((this->_acceptFD = accept(this->_serverFD, (struct sockaddr *)(&this->_saddress), &this->_slen)) == -1)
-			return (-1);
+			continue;
 		fds[0].fd = this->_acceptFD;
 		fds[0].events = 0;
 		fds[0].events |= 1;
-		fds[0].events |= 2;
 		fcntl(this->_acceptFD, F_SETFL, O_NONBLOCK);
+		write(1, "test", 4);
 		pollret = poll(fds, 1, 5000);
 		if (pollret == 0)
 		{
@@ -92,10 +92,11 @@ int	Server::acceptLoop()
 			write(this->_acceptFD, this->_response.str().c_str(), this->_response.str().length());
 			cout << request << endl;
 			//cout << this->_response.str();
-			//cout << "------------------------------" << endl;
+			cout << "------------------------------" << endl;
 			//cout << "------------------------------" << endl;
 			close(this->_acceptFD);
 		}
+		usleep(10);
 	}
 }
 
