@@ -44,7 +44,7 @@ size_t	ConfigToken::getSpecialLength(std::string const &content) const {
 	return (std::string::npos);
 }
 
-size_t	ConfigToken::isSpecial(std::string const &content) const {
+size_t	ConfigToken::isSeperator(std::string const &content) const {
 	for (size_t i = 0; special_toekens[i]; i++)
 	{
 		if (content.find(special_toekens[i]) != std::string::npos)

@@ -7,12 +7,9 @@ int	main(void)
 {
 	try
 	{
-			std::ifstream file("./test_conf.conf");
-		std::stringstream stream;
-		stream << file.rdbuf();
-		Lexer<ConfigToken> l(stream);
-		std::vector<ConfigToken>::const_iterator begin = l.getToken().begin();
-		std::vector<ConfigToken>::const_iterator end = l.getToken().end();
+		Lexer<ConfigToken> *l = new Lexer<ConfigToken>("test_conf.conf");
+		std::vector<ConfigToken>::const_iterator begin = l->getToken().begin();
+		std::vector<ConfigToken>::const_iterator end = l->getToken().end();
 		while (begin != end)
 		{
 			std::cout << "|";
@@ -23,6 +20,7 @@ int	main(void)
 			std::cout << "|" << std::endl;
 			begin++;
 		}
+		delete l;
 	}
 	catch (std::exception const &e)
 	{
@@ -54,8 +52,11 @@ int	main(void)
 	{
 		std::cerr << e.what() << std::endl;
 	}
+<<<<<<< HEAD
 
 	WebServer test("./test_request.conf");
 
 	test.run();
+=======
+>>>>>>> 1d6655d12642cc97f8fb38c3bec5d619f5078e06
 }

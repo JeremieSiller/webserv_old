@@ -13,9 +13,9 @@ public:
 	virtual ~AToken();
 	int	const			&type()		const;
 	std::string const	&content()	const;
-	/* should return the index of a special token (e.g. '{' or ';') that need to be handled as one token even if
-		there are characters next to the */ 
-	virtual size_t		isSpecial(std::string const &content) const = 0;
+	/* should return the index of a seperator token (e.g. '{' or ';') that need to be handled as one token even if
+		there are characters next to it */ 
+	virtual size_t		isSeperator(std::string const &content) const = 0;
 	/* should return the length of the first special token found in content */
 	virtual size_t		getSpecialLength(std::string const &content) const = 0;
 	/* classifies the token */ 

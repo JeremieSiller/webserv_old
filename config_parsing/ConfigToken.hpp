@@ -22,9 +22,9 @@ private:
 	static const std::string special_toekens;
 public:
 	ConfigToken(std::string const &content) : AToken(content) { }
-	virtual void			classify();
-	virtual size_t			isSpecial(std::string const &content) const;
-	virtual size_t			getSpecialLength(std::string const &content) const;
+	void			classify();
+	size_t			isSeperator(std::string const &content) const;
+	size_t			getSpecialLength(std::string const &content) const;
 };
 
 #endif
