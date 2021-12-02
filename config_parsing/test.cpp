@@ -1,6 +1,7 @@
 #include "Lexer.hpp"
 #include "ConfigToken.hpp"
 #include "RequestToken.hpp"
+#include "WebServer.hpp"
 
 int	main(void)
 {
@@ -54,6 +55,7 @@ int	main(void)
 		std::cerr << e.what() << std::endl;
 	}
 
+	WebServer test("./test_request.conf");
 
-
+	test.run();
 }
