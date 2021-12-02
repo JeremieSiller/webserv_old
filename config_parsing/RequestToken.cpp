@@ -15,13 +15,13 @@ static bool	is_number(std::string const &str) {
 
 void Requests::RequestToken::classify() {
 	if (_content == ":")
-		_type = Instructions::HEADER_S;
+		_type = HEADER_S;
 	else if (_content == ",")
-		_type = Instructions::HEADER_ARGS;
+		_type = HEADER_ARGS;
 	else if (_content == "\n")
-		_type = Instructions::NEW_LINE;
+		_type = NEW_LINE;
 	else
-		_type = Instructions::IDENTIFYER; //--> needs to be more specific not there yet tho
+		_type = IDENTIFYER; //--> needs to be more specific not there yet tho
 }
 
 /* returns 1 because special RequestTokens are never longer than 1 */
@@ -34,7 +34,7 @@ size_t	Requests::RequestToken::getSpecialLength(std::string const &content) cons
 	return (std::string::npos);
 }
 
-size_t	Requests::RequestToken::isSpecial(std::string const &content) const {
+size_t	Requests::RequestToken::isSeperator(std::string const &content) const {
 	for (size_t i = 0; special_tokens[i]; i++)
 	{
 		if (content.find(special_tokens[i]) != std::string::npos)
