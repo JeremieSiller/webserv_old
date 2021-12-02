@@ -32,10 +32,18 @@ void	Server::setResponse()
 		std::stringstream	messageBuf;
 		std::ifstream		fileStream(this->_parser.getPath());
 		
-		if (!fileStream.is_open())
+		if (!fileStream.is_open() || this->_parser.getPath() == "./")
 		{
-			this->_response << this->_parser.getHttpver() << " 200 OK " << endl << endl << endl;
+			write(1 , "test", 4);
+			fileStream.close();
+			this->_response << this->_parser.getHttpver() << " 200 OK " << endl 
+			<< "Content-Type:text/plain" << endl
+			<< "Content-Length:12" << endl
+			<< endl
+			<< "Hello World!";
+
 			return ;
+
 		}
 
 		while (!fileStream.eof())
@@ -61,18 +69,23 @@ void	Server::setResponse()
 
 int	Server::acceptLoop()
 {
-	struct pollfd	fds[1];
+	struct pollfd	*fds;
 	int				pollret;
+	int				requests;
+	
+	requests = 0;
 
 	while (true)
 	{
 		if ((this->_acceptFD = accept(this->_serverFD, (struct sockaddr *)(&this->_saddress), &this->_slen)) == -1)
 			continue;
+		std::cout << "Recieved #" << requests << "..." << endl;
+		fds = new struct pollfd[1];
+		memset(fds, 0, sizeof(struct pollfd));
 		fds[0].fd = this->_acceptFD;
-		fds[0].events = 0;
+		fds[0].events |= 0;
 		fds[0].events |= 1;
 		fcntl(this->_acceptFD, F_SETFL, O_NONBLOCK);
-		write(1, "test", 4);
 		pollret = poll(fds, 1, 5000);
 		if (pollret == 0)
 		{
@@ -82,21 +95,25 @@ int	Server::acceptLoop()
 		else
 		{
 			char request[10000] = {0};
-			recv(this->_acceptFD, request, 10000, 0);
+			int revccount = recv(this->_acceptFD, request, 10000, 0);
+			if (revccount <= 0)
+			{
+				close(this->_acceptFD);
+				continue;
+			}
 			this->_parser.flush();
+			write(1, "test", 4);
 			this->_parser.parseRequest(request);
-
+			write(1, "test", 4);
 			setResponse();
 
 			// Write Response to socket;
 			write(this->_acceptFD, this->_response.str().c_str(), this->_response.str().length());
-			cout << request << endl;
-			//cout << this->_response.str();
+			cout << "Sent #" << requests++ << "..." << endl;
 			cout << "------------------------------" << endl;
-			//cout << "------------------------------" << endl;
-			close(this->_acceptFD);
+			cout << "------------------------------" << endl;
 		}
-		usleep(10);
+		delete fds;
 	}
 }
 

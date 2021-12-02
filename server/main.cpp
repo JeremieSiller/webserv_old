@@ -13,7 +13,7 @@ int main()
 	signal(SIGINT, sig_exit);
 	static Server net(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY);
 
-	net.launchServer(10);
+	net.launchServer(-1);
 
 	return 0;
 }

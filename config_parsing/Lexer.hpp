@@ -62,10 +62,10 @@ private:
 				for (; i != std::string::npos && line.length() > 0 ;)
 				{
 					if (i > 0)
-						_tokens.push_back(line.substr(0, i));
-					_tokens.push_back(line.substr(i, t.getSpecialLength(line)));
-					line = line.substr(i + t.getSpecialLength(line));
-					i = t.isSpecial(line);
+						_tokens.push_back(line.substr(0, i)); // push back string inbetween
+					_tokens.push_back(line.substr(i, t.getSpecialLength(line))); // push back speical character
+					line = line.substr(i + t.getSpecialLength(line)); // set line after special character
+					i = t.isSpecial(line); // find next speical 
 				}
 				if (line.length() > 0)
 					_tokens.push_back(line);
@@ -84,6 +84,7 @@ public:
 		_stream << stream.rdbuf();
 		split_tokens();
 	}
+	/* takes file path*/
 	Lexer(std::string const &_path = DEFAULT_PATH)
 		: _tokens(), _stream()
 	{
