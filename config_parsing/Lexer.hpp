@@ -29,14 +29,34 @@ private:
 	std::stringstream	_stream;
 /* private member functions */
 	void	split_tokens();
-	void	validate_tokens() { }; //TO-DO
+	void	validate_tokens();
 public:
 /* public member functions */
 	Lexer(std::stringstream const &stream);
 	Lexer(std::string const &_path = DEFAULT_PATH);
-	~Lexer() { }; //TO-DO?
+	~Lexer() { };
 	std::vector<Token> const &getToken() const;
 };
+
+template<typename Token>
+Lexer<Token>::Lexer(std::stringstream const &stream) : _tokens(), _stream()
+{
+	_stream << stream.rdbuf();
+	split_tokens();
+	validate_tokens();
+}
+
+template<typename Token>
+Lexer<Token>::Lexer(std::string const &_path)
+		: _tokens(), _stream()
+{
+	std::ifstream file(_path.c_str());
+	if (!file)
+		throw FileNotFound(_path);
+	_stream << file.rdbuf();
+	split_tokens();
+	validate_tokens();
+}
 
 template<typename Token>
 class Lexer<Token>::FileNotFound : public std::exception {
@@ -90,22 +110,14 @@ void	Lexer<Token>::split_tokens() {
 	}
 }
 
-template<typename Token>
-Lexer<Token>::Lexer(std::stringstream const &stream) : _tokens(), _stream()
-{
-	_stream << stream.rdbuf();
-	split_tokens();
-}
-
-template<typename Token>
-Lexer<Token>::Lexer(std::string const &_path)
-		: _tokens(), _stream()
-{
-	std::ifstream file(_path.c_str());
-	if (!file)
-		throw FileNotFound(_path);
-	_stream << file.rdbuf();
-	split_tokens();
+template<class Token>
+void	Lexer<Token>::validate_tokens() {
+	typename std::vector<Token>::iterator	it = _tokens.begin();
+	while (it != _tokens.end())
+	{
+		it->classify();
+		it++;
+	}
 }
 
 template<typename Token>

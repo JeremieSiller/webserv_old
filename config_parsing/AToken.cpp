@@ -8,7 +8,7 @@ AToken::~AToken()
 { }
 
 AToken::AToken(std::string const &content) :
-	_content(content)
+	_type() , _content(content)
 { }
 
 int	const	&AToken::type() const {

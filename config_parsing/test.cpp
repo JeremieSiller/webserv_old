@@ -6,9 +6,9 @@ int	main(void)
 {
 	try
 	{
-		Lexer<ConfigToken> *l = new Lexer<ConfigToken>("test_conf.conf");
-		std::vector<ConfigToken>::const_iterator begin = l->getToken().begin();
-		std::vector<ConfigToken>::const_iterator end = l->getToken().end();
+		Lexer<ConfigToken> l("test_conf.conf");
+		std::vector<ConfigToken>::const_iterator begin = l.getToken().begin();
+		std::vector<ConfigToken>::const_iterator end = l.getToken().end();
 		while (begin != end)
 		{
 			std::cout << "|";
@@ -16,34 +16,21 @@ int	main(void)
 				std::cout << begin->content();
 			else
 				std::cout << "\\n";
-			std::cout << "|" << std::endl;
-			begin++;
-		}
-		delete l;
-	}
-	catch (std::exception const &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-
-
-	try
-	{
-		std::ifstream file("test_request.conf");
-		std::stringstream stream;
-
-		stream << file.rdbuf();
-		Lexer<Requests::RequestToken> l(stream);
-		std::vector<Requests::RequestToken>::const_iterator begin = l.getToken().begin();
-		std::vector<Requests::RequestToken>::const_iterator end = l.getToken().end();
-		while (begin != end)
-		{
-			std::cout << "|";
-			if (begin->content() != "\n")
-				std::cout << begin->content();
+			std::cout << "| "; 
+			if (begin->type() == IP_ADDRESS)
+				std::cout << "IP" << std::endl;
+			else if (begin->type() == INTEGER)
+				std::cout << "int" << std::endl;
+			else if (begin->type() == DIRECTORY)
+				std::cout << "dir" << std::endl;
+			else if (begin->type() == STRING)
+				std::cout << "str" << std::endl;
+			else if (begin->type() == NEW_LINE)
+				std::cout << "\\n" << std::endl;
+			else if (begin->type() == PATH)
+				std::cout << "path" << std::endl;
 			else
-				std::cout << "\\n";
-			std::cout << "|" << std::endl;
+				std::cout << begin->identity[begin->type()] << std::endl;
 			begin++;
 		}
 	}

@@ -5,22 +5,46 @@
 # include <cctype>
 
 typedef enum {
-	IDENTIFYER,
 	CURL_SCOPE_S,
 	CURL_SCOPE_E,
-	NOR_SCOPE_S,
-	NOR_SCOPE_E,
-	EO_INSTRUCTION,
-	NUMBER,
-	COMMENT_START,
-	NEW_LINE
+	SCOPE_E,
+	SCOPE_S,
+	COMMENT,
+	NEW_LINE,
+	SERVER,
+	LOCATION,
+	ROOT, //directory ??
+	ERROR_PAGE,
+	MAX_BODY_SIZE,
+	METHOD,
+	GET,
+	POST,
+	DELTE,
+	INDEX, // can this differ>
+	UPLOAD_ENABLE,
+	ON,
+	OFF,
+	LISTEN,
+	CGI_EXTENSION,
+	CGI_PATH,
+	SERVER_NAME,
+	AUTO_INDEX,
+	DOUBLE_DOT,
+	EOF_INSTRUCT,
+	IP_ADDRESS,
+	INTEGER,
+	DIRECTORY,
+	PATH,
+	STRING
 } instrutions;
 
 class ConfigToken : public AToken
 {
 private:
-	static const std::string special_toekens;
+	static const std::string	special_toekens;
 public:
+	size_t						getPos() const;
+	static const std::string	identity[];
 	ConfigToken(std::string const &content) : AToken(content) { }
 	void			classify();
 	size_t			isSeperator(std::string const &content) const;

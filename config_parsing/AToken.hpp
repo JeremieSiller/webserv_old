@@ -6,7 +6,7 @@
 class AToken {
 protected:
 	int					_type;
-	const std::string	_content;
+	std::string			_content;
 public:
 	AToken(int type, std::string const &content);
 	AToken(std::string const &content);
