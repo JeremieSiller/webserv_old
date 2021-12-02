@@ -52,11 +52,8 @@ int	main(void)
 	{
 		std::cerr << e.what() << std::endl;
 	}
-<<<<<<< HEAD
 
 	WebServer test("./test_request.conf");
 
 	test.run();
-=======
->>>>>>> 1d6655d12642cc97f8fb38c3bec5d619f5078e06
 }
