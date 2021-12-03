@@ -25,6 +25,8 @@ namespace Requests
 		void			classify();
 		size_t			isSeperator(std::string const &content) const;
 		size_t			getSpecialLength(std::string const &content) const;
+		bool			isAllowed_toFollow(AToken const &in) const { return true; }
+		bool			isAllowed_toPreceed(AToken const &in) const { return true; }
 	};
 
 }

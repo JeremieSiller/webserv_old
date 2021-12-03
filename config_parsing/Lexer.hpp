@@ -74,10 +74,10 @@ public:
 
 template<typename Token>
 void	Lexer<Token>::split_tokens() {
-	std::string				line;
-	std::stringstream		tmp;
-	std::istream_iterator<std::string> end;
-	std::istream_iterator<std::string> start;
+	std::string							line;
+	std::stringstream					tmp;
+	std::istream_iterator<std::string>	end;
+	std::istream_iterator<std::string>	start;
 	while (std::getline(_stream, line))
 	{
 		tmp << line;
@@ -116,6 +116,15 @@ void	Lexer<Token>::validate_tokens() {
 	while (it != _tokens.end())
 	{
 		it->classify();
+		if (it->type() == Token::COMMENT)
+		{
+			while (it != _tokens.end() && it->content() != "\n")
+			{
+				it->setType(Token::COMMENT);
+				it++;
+			}
+			continue ;
+		}
 		it++;
 	}
 }

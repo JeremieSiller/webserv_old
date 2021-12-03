@@ -3,6 +3,12 @@
 
 # include <string>
 
+/**
+ * Abstract Token class.
+ * is used by Lexer
+ * also needs to implement a enum called instructions with atleast a qualifyer named COMMENT
+ * Lexer will handle everything as comment that follows a COMMENT type until a new line occurs
+**/
 class AToken {
 protected:
 	int					_type;
@@ -20,6 +26,8 @@ public:
 	virtual size_t		getSpecialLength(std::string const &content) const = 0;
 	/* classifies the token */ 
 	virtual void		classify() = 0;
+	virtual bool		isAllowed_toFollow(AToken const &in) const = 0;
+	virtual bool		isAllowed_toPreceed(AToken const &in) const = 0;
 };
 
 #endif

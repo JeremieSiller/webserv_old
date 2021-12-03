@@ -18,17 +18,17 @@ int	main(void)
 			else
 				std::cout << "\\n";
 			std::cout << "| "; 
-			if (begin->type() == IP_ADDRESS)
+			if (begin->type() == ConfigToken::IP_ADDRESS)
 				std::cout << "IP" << std::endl;
-			else if (begin->type() == INTEGER)
+			else if (begin->type() == ConfigToken::INTEGER)
 				std::cout << "int" << std::endl;
-			else if (begin->type() == DIRECTORY)
+			else if (begin->type() == ConfigToken::DIRECTORY)
 				std::cout << "dir" << std::endl;
-			else if (begin->type() == STRING)
+			else if (begin->type() == ConfigToken::STRING)
 				std::cout << "str" << std::endl;
-			else if (begin->type() == NEW_LINE)
+			else if (begin->type() == ConfigToken::NEW_LINE)
 				std::cout << "\\n" << std::endl;
-			else if (begin->type() == PATH)
+			else if (begin->type() == ConfigToken::PATH)
 				std::cout << "path" << std::endl;
 			else
 				std::cout << begin->identity[begin->type()] << std::endl;
