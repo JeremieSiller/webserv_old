@@ -106,11 +106,15 @@ size_t	ConfigToken::isSeperator(std::string const &content) const {
 }
 
 bool	ConfigToken::isAllowed_toFollow(AToken const &in) const {
-	return true;
+	if (_type == EOF_INSTRUCT)
+		return true;
+	return false;
 }
 
 bool	ConfigToken::isAllowed_toPreceed(AToken const &in) const {
-	return true;
+	if (_type == EOF_INSTRUCT)
+		return true;
+	return false;
 }
 
 void	ConfigToken::setType(instrutions const &val) {

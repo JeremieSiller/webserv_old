@@ -23,6 +23,7 @@ class Lexer {
 private:
 /* execptions classes */
 	class FileNotFound;
+	class UnexpectedToken;
 private:
 /* attributes */
 	std::vector<Token>	_tokens;
@@ -30,6 +31,7 @@ private:
 /* private member functions */
 	void	split_tokens();
 	void	validate_tokens();
+	void	check_tokens() const;
 public:
 /* public member functions */
 	Lexer(std::stringstream const &stream);
@@ -61,7 +63,7 @@ Lexer<Token>::Lexer(std::string const &_path)
 template<typename Token>
 class Lexer<Token>::FileNotFound : public std::exception {
 private:
-	std::string _msg;
+	std::string	_msg;
 public:
 	FileNotFound(std::string const &path) : _msg(FILE_NOT_FOUND) {
 		_msg += path;
@@ -70,6 +72,20 @@ public:
 		return (_msg.c_str());
 	}
 	~FileNotFound() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW { } // dont ask me why but compiler says I need it // (different syntax on macos :|)
+};
+
+template<class Token>
+class Lexer<Token>::UnexpectedToken : public std::exception {
+private:
+	sdt::string	_msg;
+public:
+	UnexpectedToken(std::string const &content) : _msg() { 
+		_msg = "Error found unexpected Token near " + content;
+	}
+	const char *what() const throw () {
+		return (_msg.c_str());
+	}
+	~UnexpectedToken() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW { }
 };
 
 template<typename Token>
@@ -133,5 +149,17 @@ template<typename Token>
 std::vector<Token> const &Lexer<Token>::getToken() const {
 		return _tokens;
 };
+
+template<class Token>
+void	Lexer<Token>::check_tokens() const {
+	typename std::vector<Token>::const_iterator	it = _tokens.begin();
+	while (it != _tokens.end())
+	{
+		while (it->content() != Token::EOF_INSTRUCT && it != _tokens.end())
+		{
+			it++;
+		}
+	}
+}
 
 #endif
