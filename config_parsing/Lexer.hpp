@@ -69,7 +69,12 @@ public:
 	const char *what() const throw () {
 		return (_msg.c_str());
 	}
+	#ifdef __linux__
 	~FileNotFound() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW { } // dont ask me why but compiler says I need it // (different syntax on macos :|)
+	#endif
+	#ifdef __APPLE__
+	~FileNotFound() _NOEXCEPT {};
+	#endif
 };
 
 template<typename Token>
