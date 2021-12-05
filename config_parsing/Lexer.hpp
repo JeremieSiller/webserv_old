@@ -24,6 +24,7 @@ private:
 /* execptions classes */
 	class FileNotFound;
 	class UnexpectedToken;
+	class ScopeNotClosed;
 private:
 /* attributes */
 	std::vector<Token>	_tokens;
@@ -31,6 +32,7 @@ private:
 /* private member functions */
 	void	split_tokens();
 	void	validate_tokens();
+	void	set_scopes();
 	void	check_tokens() const;
 public:
 /* public member functions */
@@ -46,6 +48,8 @@ Lexer<Token>::Lexer(std::stringstream const &stream) : _tokens(), _stream()
 	_stream << stream.rdbuf();
 	split_tokens();
 	validate_tokens();
+	set_scopes();
+	// check_tokens();
 }
 
 template<typename Token>
@@ -58,6 +62,8 @@ Lexer<Token>::Lexer(std::string const &_path)
 	_stream << file.rdbuf();
 	split_tokens();
 	validate_tokens();
+	set_scopes();
+	// check_tokens();
 }
 
 template<typename Token>
@@ -82,7 +88,7 @@ public:
 template<class Token>
 class Lexer<Token>::UnexpectedToken : public std::exception {
 private:
-	sdt::string	_msg;
+	std::string	_msg;
 public:
 	UnexpectedToken(std::string const &content) : _msg() { 
 		_msg = "Error found unexpected Token near " + content;
@@ -90,7 +96,20 @@ public:
 	const char *what() const throw () {
 		return (_msg.c_str());
 	}
+	#ifdef __linux__
 	~UnexpectedToken() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW { }
+	#endif
+	#ifdef __APPLE__
+	~UnexpectedToken() _NOEXCEPT { }
+	#endif
+};
+
+template<class Token>
+class Lexer<Token>::ScopeNotClosed : public std::exception {
+public:
+	const char *what() const throw () {
+		return "Error: Scope not closed\n";
+	}
 };
 
 template<typename Token>
@@ -150,6 +169,23 @@ void	Lexer<Token>::validate_tokens() {
 	}
 }
 
+template<class Token>
+void	Lexer<Token>::set_scopes() {
+	typename std::vector<Token>::iterator	it = _tokens.begin();
+	int											scope = 0;
+	while (it != _tokens.end())
+	{
+		if (it->type() == Token::SCOPE_START)
+			scope++;
+		else if (it->type() == Token::SCOPE_END)
+			scope--;
+		it->setScope(scope);
+		it++;
+	}
+	if (scope != 0)
+		throw ScopeNotClosed();
+}
+
 template<typename Token>
 std::vector<Token> const &Lexer<Token>::getToken() const {
 		return _tokens;
@@ -158,12 +194,28 @@ std::vector<Token> const &Lexer<Token>::getToken() const {
 template<class Token>
 void	Lexer<Token>::check_tokens() const {
 	typename std::vector<Token>::const_iterator	it = _tokens.begin();
+	typename std::vector<Token>::const_iterator tmp = _tokens.begin();
+	int i = 0;
 	while (it != _tokens.end())
 	{
-		while (it->content() != Token::EOF_INSTRUCT && it != _tokens.end())
+		if (it->type() == Token::SCOPE_START)
 		{
+			while (it != _tokens.end() && it->type() != Token::SCOPE_END)
+			{
+				tmp = it;
+				while (it != _tokens.end() && it->type() != Token::EOF_INSTRUCT && it->type() != Token::SCOPE_END)
+					it++;
+				if (it == _tokens.end())
+					throw ScopeNotClosed();
+				if (it->validate_syntax(tmp, it) == false)
+					throw UnexpectedToken(tmp->content());
+			}
+			if (it == _tokens.end())
+				throw ScopeNotClosed();
 			it++;
 		}
+		else
+			it++;
 	}
 }
 

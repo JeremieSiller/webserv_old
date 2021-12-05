@@ -18,3 +18,11 @@ int	const	&AToken::type() const {
 std::string const &AToken::content() const {
 	return (_content);
 }
+
+size_t const	&AToken::scope() const {
+	return _scope;
+}
+
+void	AToken::setScope(size_t const &scope) {
+	_scope = scope;
+}

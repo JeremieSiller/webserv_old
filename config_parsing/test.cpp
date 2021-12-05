@@ -19,19 +19,20 @@ int	main(void)
 				std::cout << "\\n";
 			std::cout << "| "; 
 			if (begin->type() == ConfigToken::IP_ADDRESS)
-				std::cout << "IP" << std::endl;
+				std::cout << "IP";
 			else if (begin->type() == ConfigToken::INTEGER)
-				std::cout << "int" << std::endl;
+				std::cout << "int";
 			else if (begin->type() == ConfigToken::DIRECTORY)
-				std::cout << "dir" << std::endl;
+				std::cout << "dir";
 			else if (begin->type() == ConfigToken::STRING)
-				std::cout << "str" << std::endl;
+				std::cout << "str";
 			else if (begin->type() == ConfigToken::NEW_LINE)
-				std::cout << "\\n" << std::endl;
+				std::cout << "\\n";
 			else if (begin->type() == ConfigToken::PATH)
-				std::cout << "path" << std::endl;
+				std::cout << "path";
 			else
-				std::cout << begin->identity[begin->type()] << std::endl;
+				std::cout << begin->identity[begin->type()];
+			std::cout << " |" << begin->scope() << std::endl;
 			begin++;
 		}
 	}

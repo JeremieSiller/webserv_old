@@ -3,12 +3,11 @@
 #include <iostream>
 #include <arpa/inet.h>
 
-const std::string	ConfigToken::special_toekens = "#;:{(})";
+const std::string	ConfigToken::special_toekens = "#;:{}";
+
 const std::string	ConfigToken::identity[] = {
 	"{",
 	"}",
-	"(",
-	")",
 	"#",
 	"\n",
 	"server",
@@ -105,16 +104,29 @@ size_t	ConfigToken::isSeperator(std::string const &content) const {
 	return (safe);
 }
 
-bool	ConfigToken::isAllowed_toFollow(AToken const &in) const {
-	if (_type == EOF_INSTRUCT)
-		return true;
-	return false;
-}
+// bool	ConfigToken::isAllowed_toFollow(AToken const &in) const {
+// 	if (_type == EOF_INSTRUCT)
+// 		return true;
+// 	return false;
+// }
 
-bool	ConfigToken::isAllowed_toPreceed(AToken const &in) const {
-	if (_type == EOF_INSTRUCT)
-		return true;
-	return false;
+// bool	ConfigToken::isAllowed_toPreceed(AToken const &in) const {
+// 	if (_type == EOF_INSTRUCT)
+// 		return true;
+// 	return false;
+// }
+
+bool	ConfigToken::validate_syntax(std::vector<AToken>::const_iterator tokens, std::vector<AToken>::const_iterator const &end) const {
+	// int	const &instruction = tokens->type();
+	// if (instruction == SERVER)
+	// {
+
+	// }
+	// while (tokens != end)
+	// {
+	// 	tokens++;
+	// }
+	return true;
 }
 
 void	ConfigToken::setType(instrutions const &val) {

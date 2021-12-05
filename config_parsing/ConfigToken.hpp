@@ -9,10 +9,8 @@ class ConfigToken : public AToken
 {
 public:
 	typedef enum {
-		CURL_SCOPE_S,
-		CURL_SCOPE_E,
-		SCOPE_E,
-		SCOPE_S,
+		SCOPE_START,
+		SCOPE_END,
 		COMMENT,
 		NEW_LINE,
 		SERVER,
@@ -50,9 +48,10 @@ public:
 	void			classify();
 	size_t			isSeperator(std::string const &content) const;
 	size_t			getSpecialLength(std::string const &content) const;
-	bool			isAllowed_toFollow(AToken const &in) const;
-	bool			isAllowed_toPreceed(AToken const &in) const;
+	// bool			isAllowed_toFollow(AToken const &in) const;
+	// bool			isAllowed_toPreceed(AToken const &in) const;
 	void			setType(instrutions const &val);
+	bool			validate_syntax(std::vector<AToken>::const_iterator tokens, std::vector<AToken>::const_iterator const &end) const;
 };
 
 #endif
