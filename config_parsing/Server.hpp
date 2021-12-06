@@ -31,6 +31,12 @@ namespace n_Server
 	} Returns;
 
 
+	typedef enum {
+		DIEING,
+		READING,
+		WRITING,
+
+	} clientModes;
 
 	class HttpClient
 	{
@@ -39,15 +45,18 @@ namespace n_Server
 
 			int						_clientFD;
 			std::stringstream		_readClient;
-			bool					_shutdown;
 			struct sockaddr			_cliAddr;
 			socklen_t				_cliAddrLen;
+
+			int						_clientMode;
 
 		public:
 
 		int							getClientFD();
 		
-		bool						shutdown();
+		int							getClientMode();
+
+		void						setClientMode(int mode);
 
 		// READS FROM CLIENT SOCKET AND RETURNS IT IN A STRINGSTREAM
 		std::stringstream &	readRequest();

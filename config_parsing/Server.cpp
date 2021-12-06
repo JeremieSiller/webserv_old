@@ -38,7 +38,6 @@ int		Server::init(int domain, int type, int protocol, unsigned short port, std::
 		return ERROR_LISTEN;
 	return SUCCES;
 }
-
 HttpClient		*Server::newAccept()
 {
 	int	clientFD;
@@ -57,7 +56,7 @@ HttpClient::HttpClient(int const &fd, struct sockaddr cliAddr, socklen_t addrlen
 {
 	fcntl(this->_clientFD, F_SETFL, O_NONBLOCK);
 	this->_clientFD = fd;
-	this->_shutdown = false;
+	this->_clientMode = READING;
 	this->_cliAddr = cliAddr;
 	this->_cliAddrLen = addrlen;
 }
@@ -71,15 +70,23 @@ std::stringstream  &	HttpClient::readRequest()
 {
 	char				buffer[READ_BUFFER_SIZE];
 
-	this->_readClient.str() = std::string("");
+	this->_readClient.str("");
+	memset(buffer, 0, READ_BUFFER_SIZE);
 	int	count = recv(this->_clientFD, buffer, READ_BUFFER_SIZE, 0);
+	this->_clientMode = WRITING;
 	if (count <= 0)
-		this->_shutdown = true;
+		this->_clientMode = DIEING;
 	this->_readClient << buffer;
 	return (this->_readClient);
 }
 
-bool					HttpClient::shutdown()
+int						HttpClient::getClientMode()
 {
-	return (this->_shutdown);
+	return (this->_clientMode);
 }
+
+void			HttpClient::setClientMode(int mode)
+{
+	this->_clientMode = mode;
+}
+
