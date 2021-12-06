@@ -41,7 +41,7 @@ int	main(void)
 		std::cerr << e.what() << std::endl;
 	}
 
-	WebServer test("./test_request.conf");
+	WebServer test("./test_conf.conf");
 
 	test.run();
 }

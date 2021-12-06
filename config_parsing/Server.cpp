@@ -42,20 +42,24 @@ int		Server::init(int domain, int type, int protocol, unsigned short port, std::
 HttpClient		*Server::newAccept()
 {
 	int	clientFD;
+	struct sockaddr cliAddr;
+	socklen_t		cliLen = sizeof(cliAddr);
 
-	clientFD = accept(this->_serverFD, (struct sockaddr *)&this->_saddress, &this->_slen);
+	clientFD = accept(this->_serverFD, &cliAddr, &cliLen);
 
 	if (clientFD == -1)
 		NULL;
 
-	return new HttpClient(clientFD);
+	return new HttpClient(clientFD, cliAddr, cliLen);
 }
 
-HttpClient::HttpClient(int const &fd)
+HttpClient::HttpClient(int const &fd, struct sockaddr cliAddr, socklen_t addrlen)
 {
 	fcntl(this->_clientFD, F_SETFL, O_NONBLOCK);
 	this->_clientFD = fd;
 	this->_shutdown = false;
+	this->_cliAddr = cliAddr;
+	this->_cliAddrLen = addrlen;
 }
 
 int		HttpClient::getClientFD()

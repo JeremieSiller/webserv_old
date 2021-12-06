@@ -21,6 +21,8 @@ class WebServer
 		fd_set		_readfds;
 		fd_set		_writefds;
 
+		int			_maxfds;
+
 		void	_initServers();
 
 		void	_initSets();

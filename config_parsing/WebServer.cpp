@@ -9,8 +9,15 @@ WebServer::WebServer(std::string configPath) : conf(configPath)
 
 int			WebServer::_doSelect()
 {
-	int	ret = select(this->_servers.size(), &this->_readfds, &this->_writefds, NULL, NULL);
 
+	struct timeval tv;
+
+	tv.tv_sec = 5;
+	tv.tv_usec = 0;	
+
+
+	int	ret = select(this->_maxfds, &this->_readfds, &this->_writefds, NULL, &tv);
+	
 	if (ret <= 0)
 		return ret;
 	return ret;
@@ -18,14 +25,21 @@ int			WebServer::_doSelect()
 
 void		WebServer::_initSets()
 {
+	FD_ZERO(&this->_readfds);
+	FD_ZERO(&this->_writefds);
+	this->_maxfds = 0;
 	for (std::vector<n_Server::Server *>::iterator itr = this->_servers.begin(); itr != this->_servers.end(); itr++)
 	{
 		FD_SET((*itr)->getServerFD(), &this->_readfds);
+		if ((*itr)->getServerFD() > this->_maxfds)
+			this->_maxfds = (*itr)->getServerFD();
 	}
 	
 	for (std::vector<n_Server::HttpClient *>::iterator itr = this->_clients.begin(); itr != this->_clients.end(); itr++)
 	{
 		FD_SET((*itr)->getClientFD(), &this->_readfds);
+		if ((*itr)->getClientFD() > this->_maxfds)
+			this->_maxfds = (*itr)->getClientFD();
 	}
 }
 
@@ -34,6 +48,11 @@ void		WebServer::run()
 
 
 	_initServers();
+
+	for (int i =0; i < this->_servers.size(); i++)
+	{
+		std::cout << this->_servers[i]->getServerFD() << std::endl;
+	}
 
 	while (true)
 	{

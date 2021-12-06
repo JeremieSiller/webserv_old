@@ -40,6 +40,8 @@ namespace n_Server
 			int						_clientFD;
 			std::stringstream		_readClient;
 			bool					_shutdown;
+			struct sockaddr			_cliAddr;
+			socklen_t				_cliAddrLen;
 
 		public:
 
@@ -51,7 +53,7 @@ namespace n_Server
 		std::stringstream &	readRequest();
 
 		//Creates new HTTPCLIENT SHIT
-		HttpClient(int const &);
+		HttpClient(int const &, struct sockaddr cliAddr, socklen_t addrlen);
 
 		~HttpClient()
 		{
