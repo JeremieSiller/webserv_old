@@ -33,7 +33,7 @@ private:
 		ServerErr(std::string const &msg) : _msg(msg) { 
 			_msg += std::strerror(errno);
 		};
-		virtual ~ServerErr() _NOEXCEPT { }
+		virtual ~ServerErr() { }
 		virtual const char * what() const throw() {
 			return (_msg.c_str());
 		}

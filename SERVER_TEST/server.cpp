@@ -1,7 +1,7 @@
 #include "server.hpp"
 
 Server::Server() : 
-	_address(), _socket(), _domain(), _type(), _protocol(0), _port(80) {
+	_address(), _socket(), _domain(), _type(), _protocol(0), _port(8080) {
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_socket == -1)
 	{

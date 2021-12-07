@@ -31,6 +31,8 @@ class WebServer
 
 		int		_doSelect();
 
+		void	_checkSelect();
+
 	public:
 
 		WebServer(std::string configPath);
